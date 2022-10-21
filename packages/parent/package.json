@@ -9,5 +9,8 @@
         "@sanokhin/example-lerna-child-a": "^1.0.0",
         "@sanokhin/example-lerna-child-b": "^1.0.0",
         "@sanokhin/example-lerna-child-c": "^1.0.0"
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }
