@@ -4,5 +4,8 @@
     "private": true,
     "description": "Dummy root package, for administration purpose only.",
     "author": "Stepan Anokhin",
-    "license": "ISC"
+    "license": "ISC",
+    "devDependencies": {
+        "lerna": "^6.0.1"
+    }
 }
