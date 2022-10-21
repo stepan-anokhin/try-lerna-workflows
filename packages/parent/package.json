@@ -1,6 +1,7 @@
 {
     "name": "@sanokhin/example-lerna-parent",
     "version": "1.0.0",
+    "private": false,
     "description": "Parent package, required to group the other packages into a single dependency.",
     "author": "Stepan Anokhin",
     "license": "ISC",

@@ -2,6 +2,7 @@
     "name": "@sanokhin/example-lerna-child-a",
     "version": "1.0.0",
     "main": "index.js",
+    "private": false,
     "description": "Library A",
     "author": "Stepan Anokhin",
     "license": "ISC",
