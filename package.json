@@ -1,0 +1,8 @@
+{
+    "name": "@sanokhin/example-lerna-root",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Dummy root package, for administration purpose only.",
+    "author": "Stepan Anokhin",
+    "license": "ISC"
+}

@@ -1,0 +1,14 @@
+{
+    "name": "@sanokhin/example-lerna-child-b",
+    "version": "0.0.0",
+    "main": "index.js",
+    "description": "Library B",
+    "author": "Stepan Anokhin",
+    "license": "ISC",
+    "scripts": {
+        "test": "jest"
+    },
+    "devDependencies": {
+        "jest": "^29.2.1"
+    }
+}
