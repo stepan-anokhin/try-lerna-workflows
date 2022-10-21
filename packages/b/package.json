@@ -1,6 +1,6 @@
 {
     "name": "@sanokhin/example-lerna-child-b",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "main": "index.js",
     "description": "Library B",
     "author": "Stepan Anokhin",
