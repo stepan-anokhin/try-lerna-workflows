@@ -16,8 +16,8 @@ jobs:
           script: |
             // Get a list of all issues created by the PR opener
             // See: https://octokit.github.io/rest.js/#pagination
-            console.log(JSON.stringify(context, null, 2)
-            console.log(JSON.stringify(github, null, 2)
+            console.log(JSON.stringify(context, null, 2))
+            console.log(JSON.stringify(github, null, 2))
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
