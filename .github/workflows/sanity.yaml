@@ -11,6 +11,7 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
+            console.log(JSON.stringify(context, null, 2));
             
             // Compare feature-branch with staging
             const pull_request = context.payload.pull_request;
@@ -22,5 +23,5 @@ jobs:
             const status = response.data.status;
             
             if(status !== "behind") {
-              core.setFailed(`Feature-branch ${pull_request.head.ref} must be merged into staging first.`);
+              core.setFailed(`Feature-branch '${pull_request.head.ref}' must be merged into 'staging' before merging into 'master'.`);
             }
