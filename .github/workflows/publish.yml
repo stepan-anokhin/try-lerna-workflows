@@ -66,4 +66,5 @@ jobs:
               repo: context.repo.repo,
               base: "staging",
               head: "master",
+              merge_method: "rebase",
             });
