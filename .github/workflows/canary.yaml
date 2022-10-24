@@ -9,6 +9,10 @@ jobs:
     if: (github.ref_name != 'master' && github.ref_name != 'staging' && github.ref_name != 'beta') && ((github.event.action == 'labeled' && github.event.label.name == 'canary') || contains(github.event.pull_request.labels.*.name, 'canary'))
 
     steps:
+      - name: "Setup NPM"
+        run: |
+          echo ${{ github.ref }}
+          echo ${{ github.ref_name }}
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
