@@ -7,6 +7,5 @@ on:
 
 jobs:
   refresh:
-    runs-on: ubuntu-latest
     if: github.event.pull_request.merged
     uses: ./.github/workflows/sanity_check.yaml
