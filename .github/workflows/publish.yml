@@ -56,6 +56,6 @@ jobs:
             octokit.rest.repos.merge({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              "master",
-              "staging",
+              base: "master",
+              head: "staging",
             });
