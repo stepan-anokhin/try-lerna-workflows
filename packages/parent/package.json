@@ -1,14 +1,14 @@
 {
     "name": "@sanokhin/example-lerna-parent",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "private": false,
     "description": "Parent package, required to group the other packages into a single dependency.",
     "author": "Stepan Anokhin",
     "license": "ISC",
     "dependencies": {
-        "@sanokhin/example-lerna-child-a": "^1.0.0",
-        "@sanokhin/example-lerna-child-b": "^1.0.0",
-        "@sanokhin/example-lerna-child-c": "^1.0.0"
+        "@sanokhin/example-lerna-child-a": "^1.0.1",
+        "@sanokhin/example-lerna-child-b": "^1.0.1",
+        "@sanokhin/example-lerna-child-c": "^1.0.1"
     },
     "publishConfig": {
         "access": "public"
