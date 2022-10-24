@@ -13,12 +13,4 @@ jobs:
           script: |
             // Get a list of all issues created by the PR opener
             // See: https://octokit.github.io/rest.js/#pagination
-#            const response = await github.rest.repos.compareCommitsWithBasehead({
-#              owner: context.repo.owner,
-#              repo: context.repo.repo,
-#              basehead: "staging...master",
-#            });
-
-#            console.log(JSON.stringify(response, null, 2));
-            
             console.log(JSON.stringify(context, null, 2));
