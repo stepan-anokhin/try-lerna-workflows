@@ -6,6 +6,8 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+
+    # Execute only for feature-branches with 'canary' label:
     if: (github.head_ref != 'master' && github.head_ref != 'staging' && github.head_ref != 'beta') && ((github.event.action == 'labeled' && github.event.label.name == 'canary') || contains(github.event.pull_request.labels.*.name, 'canary'))
 
     steps:

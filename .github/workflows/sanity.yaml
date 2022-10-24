@@ -1,14 +1,18 @@
 name: Merge Sanity
 on:
   pull_request:
+    types: [ opened, synchronize, closed ]
     branches:
       - master
+      - staging
 
 jobs:
   check:
     runs-on: ubuntu-latest
+    if: github.base_ref == 'master' && !github.event.pull_request.merged
     steps:
-      - uses: actions/github-script@v6
+      - name: "Check Merged into Staging"
+        uses: actions/github-script@v6
         with:
           script: |
             console.log(JSON.stringify(context, null, 2));
@@ -25,3 +29,19 @@ jobs:
             if(status !== "behind") {
               core.setFailed(`Feature-branch '${pull_request.head.ref}' must be merged into 'staging' before merging into 'master'.`);
             }
+
+  update:
+    runs-on: ubuntu-latest
+    if: github.base_ref == 'staging' && github.event.pull_request.merged
+    steps:
+      - name: "Update Sanity Check"
+        uses: actions/github-script@v6
+        with:
+          script: |
+            console.log(JSON.stringify(context, null, 2));
+            octokit.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: "sanity.yaml",
+              ref: context.ref,
+            });

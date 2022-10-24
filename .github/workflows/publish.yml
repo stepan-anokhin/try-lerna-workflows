@@ -11,21 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/github-script@v6
-        with:
-          script: |
-            // Get a list of all issues created by the PR opener
-            // See: https://octokit.github.io/rest.js/#pagination
-            const response = await github.rest.repos.compareCommitsWithBasehead({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              basehead: "staging...master",
-            });
-            
-            console.log(JSON.stringify(response, null, 2));
-            
-            console.log(JSON.stringify(context, null, 2))
-            console.log(JSON.stringify(github, null, 2))
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
@@ -44,7 +29,7 @@ jobs:
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
 
           if [ ${{ github.ref_name }} = dev ]; then
-            npx lerna version --no-changelog --conventional-commits --conventional-prerelease --no-push --preid alpha --yes
+            npx lerna version --no-changelog --conventional-commits --conventional-prerelease --include-merged-tags --no-push --preid alpha --yes
             npx lerna publish from-package --dist-tag dev --yes
           elif [ ${{ github.ref_name }} = staging ]; then
             npx lerna version --no-changelog --conventional-commits --conventional-prerelease --include-merged-tags --no-push --preid beta --yes
