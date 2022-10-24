@@ -1,5 +1,6 @@
 name: Merge Sanity
 on:
+  workflow_call:
   pull_request:
     types: [ opened, synchronize ]
     branches:

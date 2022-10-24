@@ -9,16 +9,4 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged
-    steps:
-      - name: "Refresh Sanity Check"
-        uses: actions/github-script@v6
-        with:
-          script: |
-            console.log(JSON.stringify(context, null, 2));
-            const pull_request = context.payload.pull_request;
-            github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: "sanity_check.yaml",
-              ref: pull_request.head.ref,
-            });
+    uses: ./.github/workflows/sanity_check.yaml
