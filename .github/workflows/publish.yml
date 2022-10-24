@@ -45,12 +45,17 @@ jobs:
             npx lerna version --no-changelog --conventional-commits --conventional-graduate --yes
             npx lerna publish from-package --yes
           fi
-      
-      - name: "Auto-merge master -> staging"
+
+      - name: "Auto-merge master->staging"
+        uses: actions/github-script@v6
         if: github.ref_name == 'master'
-        run: |
-          git fetch --depth=1
-          git checkout staging
-          git pull
-          git merge master -m "Auto-merge master -> staging"
-          git push
+        with:
+          script: |
+            // See: https://octokit.github.io/rest.js/v19#repos-merge
+            // See: https://github.com/actions/github-script
+            octokit.rest.repos.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              "master",
+              "staging",
+            });
