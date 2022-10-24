@@ -47,7 +47,7 @@ jobs:
             npx lerna version --no-changelog --conventional-commits --conventional-prerelease --no-push --preid alpha --yes
             npx lerna publish from-package --dist-tag dev --yes
           elif [ ${{ github.ref_name }} = staging ]; then
-            npx lerna version --no-changelog --conventional-commits --conventional-prerelease --no-push --preid beta --yes
+            npx lerna version --no-changelog --conventional-commits --conventional-prerelease --include-merged-tags --no-push --preid beta --yes
             npx lerna publish from-package --dist-tag next --yes
           elif [ ${{ github.ref_name }} = master ]; then 
             npx lerna version --no-changelog --conventional-commits --conventional-graduate --yes
