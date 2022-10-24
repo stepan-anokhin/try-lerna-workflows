@@ -11,10 +11,16 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
+            
+            // Compare feature-branch with staging
             const pull_request = context.payload.pull_request;
             const response = await github.rest.repos.compareCommitsWithBasehead({
               owner: context.repo.owner,
               repo: context.repo.repo,
               basehead: `staging...${pull_request.head.ref}`,
             });
-            console.log(JSON.stringify(response.data, null, 2));
+            const status = response.data.status;
+            
+            if(status !== "behind") {
+              core.setFailed(`Feature-branch ${pull_request.head.ref} must be merged into staging first.`);
+            }
