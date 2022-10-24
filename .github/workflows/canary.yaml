@@ -13,6 +13,7 @@ jobs:
         run: |
           echo ${{ github.ref }}
           echo ${{ github.ref_name }}
+          echo ${{ github.head_ref }}
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
