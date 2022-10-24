@@ -8,4 +8,16 @@ on:
 jobs:
   refresh:
     if: github.event.pull_request.merged
-    uses: ./.github/workflows/sanity_check.yaml
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Refresh Sanity Check"
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const pull_request = context.payload.pull_request;
+            octokit.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              "sanity_check.yaml",
+              pull_request.head.ref,
+            });
