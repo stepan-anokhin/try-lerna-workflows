@@ -1,6 +1,6 @@
 {
     "name": "@sanokhin/example-lerna-child-a",
-    "version": "1.0.10",
+    "version": "1.0.11",
     "main": "index.js",
     "private": false,
     "description": "Library A",
