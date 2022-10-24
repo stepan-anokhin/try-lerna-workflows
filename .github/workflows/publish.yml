@@ -56,6 +56,6 @@ jobs:
             github.rest.repos.merge({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              base: "master",
-              head: "staging",
+              base: "staging",
+              head: "master",
             });
