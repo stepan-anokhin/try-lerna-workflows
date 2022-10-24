@@ -6,19 +6,14 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    if: (github.ref_name != 'master' && github.ref_name != 'staging' && github.ref_name != 'beta') && ((github.event.action == 'labeled' && github.event.label.name == 'canary') || contains(github.event.pull_request.labels.*.name, 'canary'))
+    if: (github.head_ref != 'master' && github.head_ref != 'staging' && github.head_ref != 'beta') && ((github.event.action == 'labeled' && github.event.label.name == 'canary') || contains(github.event.pull_request.labels.*.name, 'canary'))
 
     steps:
-      - name: "Setup NPM"
-        run: |
-          echo ${{ github.ref }}
-          echo ${{ github.ref_name }}
-          echo ${{ github.head_ref }}
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.head_ref }}
 
       - name: "Setup NodeJS"
         uses: actions/setup-node@v2
@@ -33,4 +28,6 @@ jobs:
 
       - name: "Make Canary Release"
         run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           npm run release:canary
