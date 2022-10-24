@@ -1,0 +1,40 @@
+name: Publish
+on:
+  push:
+    branches:
+      - dev
+      - staging
+      - master
+
+jobs:
+  publish:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: "Setup NPM"
+        run: |
+          npm ci
+          npx lerna bootstrap -- --force-local
+          npm set "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}"
+
+      - name: "Version and Publish"
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+          if [ ${{ github.ref_name }} = dev ]; then
+            npx lerna version --no-changelog --conventional-commits --conventional-prerelease --no-push --preid alpha --yes
+            npx lerna publish from-package --dist-tag dev --yes
+          elif [ ${{ github.ref_name }} = staging ]; then
+            npx lerna version --no-changelog --conventional-commits --conventional-prerelease --no-push --preid beta --yes
+            npx lerna publish from-package --dist-tag next --yes
+          elif [ ${{ github.ref_name }} = master ]; then 
+            npx lerna version --no-changelog --conventional-commits --conventional-graduate --yes
+            npx lerna publish from-package --yes
+          fi
