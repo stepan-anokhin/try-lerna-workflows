@@ -8,7 +8,6 @@ on:
 
 jobs:
   publish:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -38,3 +37,12 @@ jobs:
             npx lerna version --no-changelog --conventional-commits --conventional-graduate --yes
             npx lerna publish from-package --yes
           fi
+      
+      - name: "Auto-merge master -> staging"
+        if: github.ref_name == 'master'
+        run: |
+          git fetch --unshallow
+          git checkout staging
+          git pull
+          git merge master -m "Auto-merge master -> staging"
+          git push
