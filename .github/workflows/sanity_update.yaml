@@ -15,7 +15,7 @@ jobs:
         with:
           script: |
             const pull_request = context.payload.pull_request;
-            github.rest.actions.createWorkflowDispatch({
+            const response = await github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner,
               repo: context.repo.repo,
               workflow_id: "sanity_check.yaml",

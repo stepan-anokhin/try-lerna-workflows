@@ -17,11 +17,10 @@ jobs:
             console.log(JSON.stringify(context, null, 2));
             
             // Compare feature-branch with staging
-            const pull_request = context.payload.pull_request;
             const response = await github.rest.repos.compareCommitsWithBasehead({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              basehead: `staging...${pull_request.head.ref}`,
+              basehead: `staging...${context.ref}`,
             });
             const status = response.data.status;
             
