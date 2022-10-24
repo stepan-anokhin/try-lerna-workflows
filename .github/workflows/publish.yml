@@ -42,7 +42,7 @@ jobs:
       - name: "Auto-merge master -> staging"
         if: github.ref_name == 'master'
         run: |
-          git fetch --unshallow
+          git fetch --depth=1
           git checkout staging
           git pull
           git merge master -m "Auto-merge master -> staging"
