@@ -32,10 +32,10 @@ jobs:
           git remote set-url origin https://x-access-token:${{ secrets.CI_TOKEN }}@github.com/$GITHUB_REPOSITORY
 
           if [ ${{ github.ref_name }} = dev ]; then
-            npx lerna version --no-changelog --conventional-commits --conventional-prerelease --include-merged-tags --no-push --preid alpha --yes
+            npx lerna version --no-changelog --conventional-commits --conventional-prerelease --include-merged-tags --no-git-tag-version --no-push --preid alpha --yes
             npx lerna publish from-package --dist-tag dev --yes
           elif [ ${{ github.ref_name }} = staging ]; then
-            npx lerna version --no-changelog --conventional-commits --conventional-prerelease --include-merged-tags --no-push --preid beta --yes
+            npx lerna version --no-changelog --conventional-commits --conventional-prerelease --include-merged-tags --no-git-tag-version --no-push --preid beta --yes
             npx lerna publish from-package --dist-tag next --yes
           elif [ ${{ github.ref_name }} = master ]; then 
             npx lerna version --no-changelog --conventional-commits --conventional-graduate --yes
