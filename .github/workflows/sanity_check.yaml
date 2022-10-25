@@ -1,12 +1,13 @@
 name: Merge Sanity
 on:
   pull_request:
-    types: [ closed ]
+    types: [ opened, synchronize, closed ]
     branches:
       - staging
+      - master
 
 jobs:
-  check:
+  confirm-merged-into-staging:
     if: github.event.pull_request.merged
     runs-on: ubuntu-latest
     steps:
@@ -30,5 +31,5 @@ jobs:
             if(status !== "behind") {
               core.setFailed(`Feature-branch '${featureBranch}' must be merged into 'staging' before merging into 'master'.`);
             } else {
-              core.info(`Feature-branch '${featureBranch}' could be merged into 'master' because it is already merged into 'staging'
+              core.info(`Feature-branch '${featureBranch}' could be merged into 'master' because it is already merged into 'staging'`);
             }
