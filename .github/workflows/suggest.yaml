@@ -1,7 +1,7 @@
 name: Suggest
 on:
   pull_request:
-    types: [ open ]
+    types: [ opened ]
     branches:
       - master
 
