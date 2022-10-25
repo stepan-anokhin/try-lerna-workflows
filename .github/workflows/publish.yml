@@ -50,6 +50,7 @@ jobs:
         uses: actions/github-script@v6
         if: github.ref_name == 'master'
         with:
+          github-token: ${{ secrets.CI_TOKEN }}
           script: |
             // See: https://octokit.github.io/rest.js/v19#repos-merge
             // See: https://github.com/actions/github-script
