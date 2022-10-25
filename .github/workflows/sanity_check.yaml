@@ -8,6 +8,7 @@ on:
 
 jobs:
   confirm-merged-into-staging:
+    if: always()
     runs-on: ubuntu-latest
     needs: [ refresh-staging-status ]
     steps:
