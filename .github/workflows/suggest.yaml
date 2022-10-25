@@ -15,19 +15,27 @@ jobs:
           script: |
             // Compare feature-branch with staging
             const featureBranch = context.payload.pull_request.head.ref;
-            const response = await github.rest.repos.compareCommitsWithBasehead({
+            const comparison = await github.rest.repos.compareCommitsWithBasehead({
               owner: context.repo.owner,
               repo: context.repo.repo,
               basehead: `staging...${featureBranch}`,
             });
-            const status = response.data.status;
+            const status = comparison.data.status;
             
-            // Set check status
+            const pulls = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open",
+              base: "staging",
+              head: featureBranch,
+            });
+            
+            console.log(JSON.stringify(pulls, null, 2));
+            
+            // Make suggestion
             if(status !== "behind") {
-              const suggestion = `### Suggestion
-  
-              Create a pull request for \`${featureBranch}\` -> \`staging\` by visiting this link:  [Create Pull Request](${context.payload.repository.url}/pull/new/staging...${featureBranch}).
-              `
+              const pullRequestURL = `https://github.com/${context.repo.owner}/${context.repo.repo}/pull/new/staging...${featureBranch}`;
+              const suggestion = `### Suggestion\n\nCreate a pull request for \`${featureBranch}\` -> \`staging\` by visiting this link:  [Create Pull Request](${pullRequestURL}).`
               
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
