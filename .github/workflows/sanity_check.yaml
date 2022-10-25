@@ -36,3 +36,8 @@ jobs:
 
   refresh-staging-status:
     if: github.event.pull_request.merged
+    runs-on: ubuntu-latest
+    # Add dummy steps because empty workflows are forbidden
+    steps:
+      - name: Refresh Status
+        run: echo "REFRESHED"
