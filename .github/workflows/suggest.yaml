@@ -1,0 +1,16 @@
+name: Suggest
+on:
+  pull_request:
+    types: [ open ]
+    branches:
+      - master
+
+jobs:
+  suggest-pr-actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Suggest Merge into Staging
+        uses: actions/github-script@v6
+        with:
+          script: |
+            console.log(JSON.stringify(context, null, 2));
