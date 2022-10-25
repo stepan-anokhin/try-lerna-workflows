@@ -33,9 +33,13 @@ jobs:
 
           if [ ${{ github.ref_name }} = dev ]; then
             npx lerna version --no-changelog --conventional-commits --conventional-prerelease --include-merged-tags --no-git-tag-version --no-push --preid alpha --yes
+            git add .
+            git commit -m "Alpha release (phantom commit)"
             npx lerna publish from-package --dist-tag dev --yes
           elif [ ${{ github.ref_name }} = staging ]; then
             npx lerna version --no-changelog --conventional-commits --conventional-prerelease --include-merged-tags --no-git-tag-version --no-push --preid beta --yes
+            git add .
+            git commit -m "Beta release (phantom commit)"
             npx lerna publish from-package --dist-tag next --yes
           elif [ ${{ github.ref_name }} = master ]; then 
             npx lerna version --no-changelog --conventional-commits --conventional-graduate --yes
