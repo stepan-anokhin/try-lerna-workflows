@@ -13,9 +13,27 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const response = await github.rest.issues.listComments({
+            // Compare feature-branch with staging
+            const featureBranch = context.payload.pull_request.head.ref;
+            const response = await github.rest.repos.compareCommitsWithBasehead({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.payload.pull_request.number,
+              basehead: `staging...${featureBranch}`,
             });
-            console.log(JSON.stringify(response, null, 2));
+            const status = response.data.status;
+            
+            // Set check status
+            if(status !== "behind") {
+              const suggestion = `### Suggestion
+  
+              Create a pull request for \`${featureBranch}\` -> \`staging\` by visiting this link:  [Create Pull Request](${context.payload.repository.url}/pull/new/staging...${featureBranch}).
+              `
+              
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                body: suggestion,
+              });
+            } 
+            
