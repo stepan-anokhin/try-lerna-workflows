@@ -9,7 +9,7 @@ on:
 jobs:
   confirm-merged-into-staging:
     runs-on: ubuntu-latest
-    needs: [ refresh-status ]
+    needs: [ refresh-staging-status ]
     steps:
       - name: "Check Merged into Staging"
         uses: actions/github-script@v6
