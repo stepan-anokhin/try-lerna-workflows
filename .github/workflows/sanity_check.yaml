@@ -1,16 +1,14 @@
 name: Merge Sanity
 on:
   pull_request:
-    types: [ opened, synchronize, closed ]
+    types: [ closed ]
     branches:
       - staging
-      - master
 
 jobs:
   confirm-merged-into-staging:
-    if: always()
+    if: github.event.pull_request.merged
     runs-on: ubuntu-latest
-    needs: [ refresh-staging-status ]
     steps:
       - name: "Check Merged into Staging"
         uses: actions/github-script@v6
@@ -34,11 +32,3 @@ jobs:
             } else {
               core.info(`Feature-branch '${featureBranch}' could be merged into 'master' because it is already merged into 'staging'`);
             }
-
-  refresh-staging-status:
-    if: github.event.pull_request.merged
-    runs-on: ubuntu-latest
-    # Add dummy steps because empty workflows are forbidden
-    steps:
-      - name: Refresh Status
-        run: echo "REFRESHED"
