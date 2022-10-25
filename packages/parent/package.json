@@ -1,12 +1,12 @@
 {
     "name": "@sanokhin/example-lerna-parent",
-    "version": "1.0.22",
+    "version": "1.0.23",
     "private": false,
     "description": "Parent package, required to group the other packages into a single dependency.",
     "author": "Stepan Anokhin",
     "license": "ISC",
     "dependencies": {
-        "@sanokhin/example-lerna-child-a": "^1.0.19",
+        "@sanokhin/example-lerna-child-a": "^1.0.20",
         "@sanokhin/example-lerna-child-b": "^1.0.6",
         "@sanokhin/example-lerna-child-c": "^1.0.2"
     },
