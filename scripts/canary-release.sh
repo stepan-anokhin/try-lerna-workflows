@@ -12,4 +12,3 @@ npx lerna version --no-changelog --conventional-commits --conventional-prereleas
 # Publish canary release
 npx lerna publish from-git --dist-tag "$FEATURE_BRANCH" --yes
 
-git reset --hard HEAD~1
