@@ -31,19 +31,10 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git remote set-url origin https://x-access-token:${{ secrets.CI_TOKEN }}@github.com/$GITHUB_REPOSITORY
 
-          if [ ${{ github.ref_name }} = dev ]; then
-            npx lerna version --no-changelog --conventional-commits --conventional-prerelease --include-merged-tags --no-git-tag-version --no-push --preid alpha --yes
-            git add .
-            git commit -m "Alpha release (phantom commit)"
-            npx lerna publish from-package --dist-tag dev --yes
-          elif [ ${{ github.ref_name }} = staging ]; then
-            npx lerna version --no-changelog --conventional-commits --conventional-prerelease --include-merged-tags --no-git-tag-version --no-push --preid beta --yes
-            git add .
-            git commit -m "Beta release (phantom commit)"
-            npx lerna publish from-package --dist-tag next --yes
+          if [ ${{ github.ref_name }} = staging ]; then
+            npm run release:staging
           elif [ ${{ github.ref_name }} = master ]; then 
-            npx lerna version --no-changelog --conventional-commits --conventional-graduate --yes
-            npx lerna publish from-package --yes
+            npm run release:ga
           fi
 
       - name: "Auto-merge master->staging"
