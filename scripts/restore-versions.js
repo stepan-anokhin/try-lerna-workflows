@@ -72,6 +72,7 @@ function setVersion(pkg, newVersion) {
  */
 function repairDependencies(parent, updated, registry) {
   const manifest = readPackageJSON(parent);
+  let repaired = false;
   for (const child of updated) {
     if (!manifest.dependencies || !manifest.dependencies[child.name]) {
       continue;
@@ -82,9 +83,15 @@ function repairDependencies(parent, updated, registry) {
       // The package-lock.json should also be correct since
       // we are repairing packages in topological order.
       execSync(`npm install --save ${child.name}@^${child.preVersion} --registry ${registry}`, {cwd: parent.location});
+      repaired = true;
     } else {
       console.error({parent, child, message: "Dependency version mismatch!"})
     }
+  }
+  if (repaired) {
+    const repairedManifest = readPackageJSON(parent);
+    console.log(`Repaired dependencies for ${parent.name}:`);
+    console.log(repairedManifest.dependencies);
   }
 }
 
