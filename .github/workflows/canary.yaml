@@ -36,11 +36,11 @@ jobs:
 
       - name: "Suggest Package Config"
         uses: actions/github-script@v6
-          with:
-            script: |
-              const commentsResponse = await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.payload.pull_request.number,
-              });
-              console.log(JSON.stringify(commentsResponse.data, null, 2))
+        with:
+          script: |
+            const commentsResponse = await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+            });
+            console.log(JSON.stringify(commentsResponse.data, null, 2))
