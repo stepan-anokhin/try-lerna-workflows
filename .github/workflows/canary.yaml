@@ -38,9 +38,47 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+            // Get changed packages
+            const execSync = require('child_process').execSync;
+            const changed = JSON.parse(execSync("lerna ls --json --since master --toposort", {encoding: "utf-8"})).reverse();
+            
+            // Create package config
+            const featureBranch = context.payload.pull_request.head.ref;
+            const packageConfig = changed.map((pkg) => ({
+              name: pkg.name,
+              version: pkg.version,
+              namespace: "default",
+              marketplaceScriptsBranch: "master",
+              marketplacePackagesBranch: featureBranch,
+            }))
+            
+            const config = {"<TENANT>": {packages: packageConfig} };
+            console.log("Package config:");
+            console.log(JSON.stringify(config, null, 2));
+            
+            // Find previous comment 
             const commentsResponse = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.payload.pull_request.number,
             });
-            console.log(JSON.stringify(commentsResponse.data, null, 2))
+            const comments = commentsResponse.data;
+            const previousComment = comments.find(comment => comment.user.login === "github-actions[bot]" && comment.body.startsWith("### Package Config\n"));
+            
+            // Update or create comment
+            const body = `### Package Config\n\nAdd the following config to the \`atlan\` ConfigMap (e.g. by executing \`kubectl edit cm atlan\`):\n\`\`\`json\n${JSON.stringify(config, null, 2)}\n\`\`\`\n`;
+            if (previousComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: previousComment.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                body,
+              });
+            }
