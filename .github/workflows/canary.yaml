@@ -14,7 +14,7 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0
+          fetch-depth: 1
           ref: ${{ github.head_ref }}
 
       - name: "Setup NodeJS"
@@ -32,6 +32,7 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${{ secrets.CI_TOKEN }}@github.com/$GITHUB_REPOSITORY
           npm run release:canary
 
       - name: "Suggest Package Config"
@@ -40,7 +41,7 @@ jobs:
           script: |
             // Get changed packages
             const execSync = require('child_process').execSync;
-            const changed = JSON.parse(execSync("lerna ls --json --since master --toposort", {encoding: "utf-8"})).reverse();
+            const changed = JSON.parse(execSync("lerna ls --json --since origin/master --toposort", {encoding: "utf-8"})).reverse();
             
             // Create package config
             const featureBranch = context.payload.pull_request.head.ref;
