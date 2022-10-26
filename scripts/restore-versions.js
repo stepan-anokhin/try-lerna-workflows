@@ -8,7 +8,13 @@ const semver = require('semver')
  * @returns [{name,version,location}]
  */
 function listChanged() {
-  const lernaOutput = execSync('lerna changed --json', {encoding: 'utf-8'});
+  let lernaOutput;
+  try {
+    lernaOutput = execSync('lerna changed --json --include-merged-tags', {encoding: 'utf-8'});
+  } catch (error) {
+    console.warn("No changes detected.")
+    return [];
+  }
   return JSON.parse(lernaOutput);
 }
 
