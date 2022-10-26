@@ -11,7 +11,7 @@
     },
     "scripts": {
         "release:canary": "./scripts/canary-release.sh",
-        "prepare:staging": "node ./scripts/restore-versions.js next https://registry.npmjs.org && git add . && git commit -m 'Restore published pre-release versions'",
+        "prepare:staging": "node ./scripts/restore-versions.js next https://registry.npmjs.org && ./scripts/dummy-commit.sh 'Restore published pre-release versions'",
         "version:staging": "lerna version --no-changelog --conventional-commits --conventional-prerelease --include-merged-tags --no-push --preid beta --yes",
         "publish:staging": "lerna publish from-package --dist-tag next --yes",
         "release:staging": "npm run prepare:staging && npm run version:staging && npm run publish:staging",
