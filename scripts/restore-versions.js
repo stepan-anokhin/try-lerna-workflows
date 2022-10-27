@@ -41,7 +41,7 @@ function getPreVersion(pkg, options={}) {
   const {distTag="next"} = options;
 
   const npmOutput = execSync(`npm dist-tag ${pkg.name} --registry ${registry}`, {encoding: 'utf-8'});
-  const found = new RegExp(`(?<=${distTag}:\\s).*`).exec(npmOutput);
+  const found = new RegExp(`(?<=${distTag}:\\s).*`).exec(npmOutput); // e.g. `next: v2.0.1-beta.0`
   if (!found) {
     return;
   }
