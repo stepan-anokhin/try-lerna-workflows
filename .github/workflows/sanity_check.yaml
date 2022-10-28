@@ -61,6 +61,7 @@ jobs:
         id: changes
         with:
           ref: HEAD
+          base: origin/master
           filters: |
             a: 'packages/a/package.json'
             b: 'packages/c/package.json'
