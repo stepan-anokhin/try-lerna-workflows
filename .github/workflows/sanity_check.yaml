@@ -63,7 +63,7 @@ jobs:
           script: |
             // Get changed paths
             const execSync = require('child_process').execSync;
-            const changes = execSync('git diff --name-only origni/master', {encoding: 'utf-8'}).split('\n')
+            const changes = execSync('git diff --name-only origin/master', {encoding: 'utf-8'}).split('\n')
             
             // Set output flags
             core.setOutput('a', changes.includes('packages/a/package.json'));
