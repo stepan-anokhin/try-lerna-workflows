@@ -56,17 +56,20 @@ jobs:
           
           npm run release:staging
 
-      - name: "Package Selection"
-        uses: dorny/paths-filter@v2
+      - name: "Select Packages"
+        uses: actions/github-script@v6
         id: changes
         with:
-          ref: HEAD
-          base: origin/master
-          filters: |
-            a: 'packages/a/package.json'
-            b: 'packages/c/package.json'
-            c: 'packages/c/package.json'
-            parent: 'packages/parent/package.json'
+          script: |
+            // Get changed paths
+            const execSync = require('child_process').execSync;
+            const changes = execSync('git diff --name-only origni/master', {encoding: 'utf-8'}).split('\n')
+            
+            // Set output flags
+            core.setOutput('a', changes.includes('packages/a/package.json'));
+            core.setOutput('b', changes.includes('packages/b/package.json'));
+            core.setOutput('c', changes.includes('packages/c/package.json'));
+            core.setOutput('parent', changes.includes('packages/parent/package.json'));
 
       - name: Functional Test A
         if: steps.changes.outputs.a == 'true'
