@@ -1,0 +1,41 @@
+name: Handle Push
+on:
+  push:
+    branches:
+      - master
+
+
+jobs:
+  handle-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: "Package Selection"
+        uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            a: 'packages/a/package.json'
+            b: 'packages/b/package.json'
+            c: 'packages/c/package.json'
+            parent: 'packages/parent/package.json'
+
+      - name: Functional Test A
+        if: steps.changes.outputs.a == 'true'
+        run: |
+          echo "TESTS ON LIBRARY A"
+
+      - name: Functional Test B
+        if: steps.changes.outputs.b == 'true'
+        run: |
+          echo "TESTS ON LIBRARY B"
+
+      - name: Functional Test C
+        if: steps.changes.outputs.c == 'true'
+        run: |
+          echo "TESTS ON LIBRARY C"
+
+      - name: Functional Test Parent
+        if: steps.changes.outputs.parent == 'true'
+        run: |
+          echo "TESTS ON LIBRARY PARENT"
