@@ -2,8 +2,6 @@ name: Publish
 on:
   push:
     branches:
-      - dev
-      - staging
       - master
 
 jobs:
@@ -31,11 +29,7 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git remote set-url origin https://x-access-token:${{ secrets.CI_TOKEN }}@github.com/$GITHUB_REPOSITORY
 
-          if [ ${{ github.ref_name }} = staging ]; then
-            npm run release:staging
-          elif [ ${{ github.ref_name }} = master ]; then 
-            npm run release:ga
-          fi
+          npm run release:ga
 
       - name: "Auto-merge master->staging"
         uses: actions/github-script@v6

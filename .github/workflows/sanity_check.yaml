@@ -16,6 +16,8 @@ jobs:
           # See compareCommitsWithBasehead: https://octokit.github.io/rest.js/v19#repos-compare-commits-with-basehead
           # See @actions/core: https://github.com/actions/toolkit/tree/main/packages/core#exit-codes
           script: |
+            console.log(JSON.stringify(context, null, 2));
+            
             // Compare feature-branch with staging
             const featureBranch = context.payload.pull_request.head.ref;
             const response = await github.rest.repos.compareCommitsWithBasehead({
@@ -31,3 +33,55 @@ jobs:
             } else {
               core.info(`Feature-branch '${featureBranch}' could be merged into 'master' because it is already merged into 'staging'`);
             }
+
+      - name: "Checkout"
+        uses: actions/checkout@v2
+        with:
+          # This is required to bypass branch protection rules by GitHub actions.
+          # See https://stackoverflow.com/a/63733988
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: "Setup NPM"
+        run: |
+          npm ci
+          npx lerna bootstrap -- --force-local
+          npm set "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}"
+
+      - name: "Version and Publish"
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${{ secrets.CI_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          
+          npm run release:staging
+
+      - name: "Package Selection"
+        uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            a: 'packages/a/package.json'
+            b: 'packages/c/package.json'
+            c: 'packages/c/package.json'
+            parent: 'packages/parent/package.json'
+
+      - name: Functional Test A
+        if: steps.changes.outputs.a == 'true'
+        run: |
+          echo "TESTS ON LIBRARY A"
+
+      - name: Functional Test B
+        if: steps.changes.outputs.b == 'true'
+        run: |
+          echo "TESTS ON LIBRARY B"
+
+      - name: Functional Test C
+        if: steps.changes.outputs.c == 'true'
+        run: |
+          echo "TESTS ON LIBRARY C"
+
+      - name: Functional Test Parent
+        if: steps.changes.outputs.parent == 'true'
+        run: |
+          echo "TESTS ON LIBRARY PARENT"
