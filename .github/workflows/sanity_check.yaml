@@ -60,6 +60,7 @@ jobs:
         uses: dorny/paths-filter@v2
         id: changes
         with:
+          ref: HEAD
           filters: |
             a: 'packages/a/package.json'
             b: 'packages/c/package.json'
