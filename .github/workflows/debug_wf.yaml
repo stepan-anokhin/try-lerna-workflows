@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print Script Context
-        uses: actions/echo "github-script = ${{ github-script }}"@v6
+        uses: actions/actions/github-script@v6
         with:
           script: |
             console.log(JSON.stringify(context, null, 2));
