@@ -17,7 +17,7 @@ jobs:
           # See compareCommitsWithBasehead: https://octokit.github.io/rest.js/v19#repos-compare-commits-with-basehead
           # See @actions/core: https://github.com/actions/toolkit/tree/main/packages/core#exit-codes
           script: |
-            core.setFailed(`Feature-branch '${featureBranch}' must be merged into 'staging' before merging into 'master'.`);
+            core.setFailed("Feature-branch must be merged into 'staging' before merging into 'master'.");
 
       - name: "Checkout"
         uses: actions/checkout@v2
