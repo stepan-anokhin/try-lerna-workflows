@@ -11,28 +11,13 @@ jobs:
     steps:
       - name: "Check Merged into Staging"
         uses: actions/github-script@v6
+        if: !github.event.pull_request.merged
         with:
           # See actions/github-script@v6: https://github.com/actions/github-script#actionsgithub-script
           # See compareCommitsWithBasehead: https://octokit.github.io/rest.js/v19#repos-compare-commits-with-basehead
           # See @actions/core: https://github.com/actions/toolkit/tree/main/packages/core#exit-codes
           script: |
-            console.log(JSON.stringify(context, null, 2));
-            
-            // Compare feature-branch with staging
-            const featureBranch = context.payload.pull_request.head.ref;
-            const response = await github.rest.repos.compareCommitsWithBasehead({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              basehead: `staging...${featureBranch}`,
-            });
-            const status = response.data.status;
-            
-            // Set check status
-            if(status !== "behind") {
-              core.setFailed(`Feature-branch '${featureBranch}' must be merged into 'staging' before merging into 'master'.`);
-            } else {
-              core.info(`Feature-branch '${featureBranch}' could be merged into 'master' because it is already merged into 'staging'`);
-            }
+            core.setFailed(`Feature-branch '${featureBranch}' must be merged into 'staging' before merging into 'master'.`);
 
       - name: "Checkout"
         uses: actions/checkout@v2
