@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: "Check Merged into Staging"
         uses: actions/github-script@v6
-        if: !github.event.pull_request.merged
+        if: github.event.pull_request.merged == false
         with:
           # See actions/github-script@v6: https://github.com/actions/github-script#actionsgithub-script
           # See compareCommitsWithBasehead: https://octokit.github.io/rest.js/v19#repos-compare-commits-with-basehead
