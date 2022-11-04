@@ -1,3 +1,3 @@
 exports.b = function b() {
-  return "b-6"
+  return "b-7"
 }
