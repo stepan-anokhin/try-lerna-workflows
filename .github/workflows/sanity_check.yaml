@@ -127,6 +127,7 @@ jobs:
     name: "Confirm Test Results"
     runs-on: ubuntu-latest
     needs: [test-a, test-b, test-c, test-parent]
+    if: ${{ always() }}
     steps:
       - name: Check Test Results
         uses: actions/github-script@v6
