@@ -1,18 +1,18 @@
 {
-    "name": "@sanokhin/example-lerna-child-a",
-    "version": "1.0.29",
-    "main": "index.js",
-    "private": false,
-    "description": "Library A",
-    "author": "Stepan Anokhin",
-    "license": "ISC",
-    "scripts": {
-        "test": "jest"
-    },
-    "devDependencies": {
-        "jest": "^29.2.1"
-    },
-    "publishConfig": {
-        "access": "public"
-    }
+  "name": "@sanokhin/example-lerna-child-a",
+  "version": "1.0.30",
+  "main": "index.js",
+  "private": false,
+  "description": "Library A",
+  "author": "Stepan Anokhin",
+  "license": "ISC",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.2.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }
