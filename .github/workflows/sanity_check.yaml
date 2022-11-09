@@ -141,14 +141,13 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            console.log("${{needs.test-a.outputs.status}}");
-            console.log("${{needs.test-b.outputs.status}}");
-            console.log("${{needs.test-c.outputs.status}}");
-            console.log("${{needs.test-parent.outputs.status}}");
-            const statuses = [
-              core.getInput('needs.test-a.outputs.status'),
-              core.getInput('needs.test-b.outputs.status'),
-              core.getInput('needs.test-c.outputs.status'),
-              core.getInput('needs.test-d.outputs.status'),
-            ];
+            const statuses = {
+              "a": "${{needs.test-a.outputs.status}}",
+              "b": "${{needs.test-b.outputs.status}}",
+              "c": "${{needs.test-c.outputs.status}}",
+              "parent": "${{needs.test-parent.outputs.status}}",
+            };
             console.log(JSON.stringify(statuses, null, 2));
+            if(Object.values(statuses).some(status => status === "failure")) {
+              core.setFailed("Some of the tests failed.");
+            }
