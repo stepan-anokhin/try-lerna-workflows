@@ -146,9 +146,9 @@ jobs:
             console.log("${{needs.test-c.outputs.status}}");
             console.log("${{needs.test-parent.outputs.status}}");
             const statuses = [
-              core.getInput('needs.test-a.status'),
-              core.getInput('needs.test-b.status'),
-              core.getInput('needs.test-c.status'),
-              core.getInput('needs.test-d.status'),
+              core.getInput('needs.test-a.outputs.status'),
+              core.getInput('needs.test-b.outputs.status'),
+              core.getInput('needs.test-c.outputs.status'),
+              core.getInput('needs.test-d.outputs.status'),
             ];
             console.log(JSON.stringify(statuses, null, 2));
