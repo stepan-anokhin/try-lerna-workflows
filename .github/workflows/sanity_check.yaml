@@ -1,13 +1,18 @@
 name: Merge Sanity
 on:
   pull_request:
-    types: [ closed ]
+    types: [closed]
     branches:
       - staging
 
 jobs:
-  confirm-merged-into-staging:
+  publish_prerelease:
     runs-on: ubuntu-latest
+    outputs:
+      test-a: ${{ steps.changes.outputs.a }}
+      test-b: ${{ steps.changes.outputs.b }}
+      test-c: ${{ steps.changes.outputs.c }}
+      test-parent: ${{ steps.changes.outputs.parent }}
     steps:
       - name: "Check Merged into Staging"
         uses: actions/github-script@v6
@@ -38,7 +43,7 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git remote set-url origin https://x-access-token:${{ secrets.CI_TOKEN }}@github.com/$GITHUB_REPOSITORY
-          
+
           npm run release:staging
 
       - name: "Select Packages"
@@ -49,29 +54,47 @@ jobs:
             // Get changed paths
             const execSync = require('child_process').execSync;
             const changes = execSync('git diff --name-only origin/master', {encoding: 'utf-8'}).split('\n')
-            
+
             // Set output flags
             core.setOutput('a', changes.includes('packages/a/package.json'));
             core.setOutput('b', changes.includes('packages/b/package.json'));
             core.setOutput('c', changes.includes('packages/c/package.json'));
             core.setOutput('parent', changes.includes('packages/parent/package.json'));
-
+  test-a:
+    runs-on: ubuntu-latest
+    needs: publish_prerelease
+    steps:
       - name: Functional Test A
-        if: steps.changes.outputs.a == 'true'
+        if: needs.publish_prerelease.outputs.a == 'true'
         run: |
           echo "TESTS ON LIBRARY A"
-
+  test-b:
+    runs-on: ubuntu-latest
+    needs: publish_prerelease
+    steps:
       - name: Functional Test B
-        if: steps.changes.outputs.b == 'true'
+        if: needs.publish_prerelease.outputs.b == 'true'
         run: |
           echo "TESTS ON LIBRARY B"
-
+  test-c:
+    runs-on: ubuntu-latest
+    needs: publish_prerelease
+    steps:
       - name: Functional Test C
-        if: steps.changes.outputs.c == 'true'
+        if: needs.publish_prerelease.outputs.c == 'true'
         run: |
           echo "TESTS ON LIBRARY C"
-
+  test-parent:
+    runs-on: ubuntu-latest
+    needs: publish_prerelease
+    steps:
       - name: Functional Test Parent
-        if: steps.changes.outputs.parent == 'true'
+        if: needs.publish_prerelease.outputs.parent == 'true'
         run: |
           echo "TESTS ON LIBRARY PARENT"
+  confirm-merged-into-staging:
+    runs-on: ubuntu-latest
+    needs: [test-a, test-b, test-c, test-parent]
+    steps:
+      - name: Success
+        run: echo SUCCESS
