@@ -61,6 +61,7 @@ jobs:
             core.setOutput('b', changes.includes('packages/b/package.json'));
             core.setOutput('c', changes.includes('packages/c/package.json'));
             core.setOutput('parent', changes.includes('packages/parent/package.json'));
+
   test-a:
     name: "Test Library A"
     runs-on: ubuntu-latest
@@ -94,6 +95,7 @@ jobs:
           npx lerna bootstrap -- --force-local
           cd packages/b
           npm run test
+
   test-c:
     name: "Test Library C"
     runs-on: ubuntu-latest
@@ -110,6 +112,7 @@ jobs:
           npx lerna bootstrap -- --force-local
           cd packages/c
           npm run test
+
   test-parent:
     name: "Test Parent"
     runs-on: ubuntu-latest
@@ -119,6 +122,7 @@ jobs:
       - name: Functional Test Parent
         run: |
           echo "TESTS ON LIBRARY PARENT"
+
   confirm-merged-into-staging:
     name: "Confirm Test Results"
     runs-on: ubuntu-latest
