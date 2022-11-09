@@ -7,7 +7,7 @@ on:
 
 jobs:
   publish_prerelease:
-    name: "Publish 'next' version"
+    name: "Publish next versions"
     runs-on: ubuntu-latest
     outputs:
       test-a: ${{ steps.changes.outputs.a }}
@@ -133,6 +133,10 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+            console.log("${{needs.test-a.status}}");
+            console.log("${{needs.test-b.status}}");
+            console.log("${{needs.test-c.status}}");
+            console.log("${{needs.test-parent.status}}");
             const statuses = [
               core.getInput('needs.test-a.status'),
               core.getInput('needs.test-b.status'),
