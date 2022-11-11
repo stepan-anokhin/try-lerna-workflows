@@ -106,10 +106,13 @@ jobs:
     name: "Check Point 1"
     runs-on: ubuntu-latest
     needs:
+      - publish_prerelease
       - test-a
       - test-b
     if: ${{ always() }}
     outputs:
+      test-c: ${{ needs.publish_prerelease.outputs.test-c }}
+      test-parent: ${{ needs.publish_prerelease.outputs.test-parent }}
       status: ${{ job.status }}
     steps:
       - name: Check Test Results
@@ -132,8 +135,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - checkpoint-1
-      - publish_prerelease
-    if: needs.publish_prerelease.outputs.test-c == 'true'
+    if: needs.checkpoint-1.outputs.test-c == 'true'
     outputs:
       status: ${{ job.status }}
     steps:
@@ -156,6 +158,7 @@ jobs:
       - test-c
     if: ${{ always() }}
     outputs:
+      test-parent: ${{ needs.checkpoint-1.outputs.test-parent }}
       status: ${{ job.status }}
     steps:
       - name: Check Test Results
@@ -178,8 +181,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - checkpoint-2
-      - publish_prerelease
-    if: needs.publish_prerelease.outputs.test-parent == 'true'
+    if: needs.checkpoint-2.outputs.test-parent == 'true'
     outputs:
       status: ${{ job.status }}
     steps:
