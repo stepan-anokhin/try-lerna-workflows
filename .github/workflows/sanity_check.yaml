@@ -135,7 +135,6 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - checkpoint-1
-    if: needs.checkpoint-1.outputs.test-c == 'true'
     outputs:
       status: ${{ job.status }}
     steps:
@@ -145,6 +144,7 @@ jobs:
           fetch-depth: 0
       - name: "Run Tests"
         run: |
+          echo $${{ needs.checkpoint-1.outputs.test-c }} ${{ needs.checkpoint-1.outputs.test-c == 'true' }}
           npm ci
           npx lerna bootstrap -- --force-local
           cd packages/c
