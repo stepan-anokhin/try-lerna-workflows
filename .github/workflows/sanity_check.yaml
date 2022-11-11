@@ -181,9 +181,16 @@ jobs:
     outputs:
       status: ${{ job.status }}
     steps:
-      - name: Functional Test Parent
+      - name: "Checkout"
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: "Run Tests"
         run: |
-          echo "TESTS ON LIBRARY PARENT"
+          npm ci
+          npx lerna bootstrap -- --force-local
+          cd packages/parent
+          npm run test
 
   confirm-merged-into-staging:
     name: "Confirm Test Results"
