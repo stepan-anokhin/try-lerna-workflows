@@ -14,6 +14,6 @@
     "access": "public"
   },
   "scripts": {
-    "test": "true"
+    "test": "false"
   }
 }
