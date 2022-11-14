@@ -13,6 +13,8 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+            console.log(JSON.stringify(context, null, 2));
+            
             // Compare feature-branch with staging
             const featureBranch = context.payload.pull_request.head.ref;
             const comparison = await github.rest.repos.compareCommitsWithBasehead({
