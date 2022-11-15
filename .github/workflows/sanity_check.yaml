@@ -16,6 +16,16 @@ jobs:
       test-parent: ${{ steps.changes.outputs.parent }}
       status: ${{ job.status }}
     steps:
+      - name: "Check Merged into Staging"
+        uses: actions/github-script@v6
+        if: github.event.pull_request.merged == false
+        with:
+          # See actions/github-script@v6: https://github.com/actions/github-script#actionsgithub-script
+          # See compareCommitsWithBasehead: https://octokit.github.io/rest.js/v19#repos-compare-commits-with-basehead
+          # See @actions/core: https://github.com/actions/toolkit/tree/main/packages/core#exit-codes
+          script: |
+            core.setFailed("Feature-branch must be merged into 'staging' before merging into 'master'.");
+
       - name: "Checkout"
         uses: actions/checkout@v2
         with:
@@ -195,12 +205,17 @@ jobs:
       - publish_prerelease
       - test-parent
       - checkpoint-2
-    if: always() && needs.publish_prerelease.outputs.status == 'success'
+    if: always()
     steps:
       - name: Check Test Results
         uses: actions/github-script@v6
         with:
           script: |
+            const published = "${{ needs.publish_prerelease.outputs.status }}" === "success"
+            if (!published) {
+              core.setFailed("Publishing pre-release versions of packages must be successful.");
+            }
+            
             const statuses = {
               "Check Point 1": "${{needs.checkpoint-2.outputs.status}}",
               "parent": "${{needs.test-parent.outputs.status}}",
