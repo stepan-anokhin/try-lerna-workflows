@@ -5,6 +5,6 @@
 
 ## Release Flow
 
-<img src="./docs/MABL.png" alt="drawing" style="width:200px;"/>
+<img src="./docs/MABL.png" alt="drawing" style="width:300px;"/>
 
 
