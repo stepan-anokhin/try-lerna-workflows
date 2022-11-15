@@ -22,7 +22,7 @@ jobs:
             const owner = context.payload.repository.owner.login;
             
             // Get pulls this-feature-branch -> staging:
-            const { data: stagingPulls = [] } = await octokit.rest.pulls.list({
+            const { data: stagingPulls = [] } = await github.rest.pulls.list({
               owner,
               repo,
               state: "all",
