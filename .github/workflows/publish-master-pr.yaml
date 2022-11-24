@@ -1,0 +1,15 @@
+name: Publish Master [PR]
+on:
+  pull_request:
+    types: [ closed ]
+    branches:
+      - master
+
+concurrency: publish-master
+jobs:
+  publish-master:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish
+        run: echo SUCCESS
