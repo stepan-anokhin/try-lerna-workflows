@@ -8,7 +8,11 @@ jobs:
   test-aws:
     runs-on: ubuntu-latest
     steps:
-      - name: Publish
+      - name: Try AWS CLI
         run: |
           which aws
           aws s3 help | cat
+      - name: Test Docker
+        run: |
+          which docker
+          docker image ls --all
