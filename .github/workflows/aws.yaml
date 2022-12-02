@@ -1,0 +1,14 @@
+name: Test AWS access
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test AWS:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish
+        run: |
+          which aws
+          aws s3 help | cat
