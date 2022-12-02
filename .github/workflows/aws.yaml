@@ -16,3 +16,4 @@ jobs:
         run: |
           which docker
           docker image ls --all
+          docker tag node:14 my-node:latest
