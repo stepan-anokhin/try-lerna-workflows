@@ -17,3 +17,4 @@ jobs:
           which docker
           docker image ls --all
           docker tag node:14 my-node:latest
+          docker image ls --all
