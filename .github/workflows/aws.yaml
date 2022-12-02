@@ -15,7 +15,11 @@ jobs:
       - name: Test Docker
         if: github.ref_name == 'master'
         run: |
-          which docker
+          export GHCR_TAG="node:14"
+          export ON_PREMISE_TAG="${{ github.event.repository.name }}-${{ github.ref_name }}:latest"
+          export IMAGE_TAR="${{ github.event.repository.name }}-${{ github.ref_name }}.tar"
+          
+          docker tag "$GHCR_TAG" "$ON_PREMISE_TAG"
+          docker save "$ON_PREMISE_TAG" -o "$IMAGE_TAR"
           docker image ls --all
-          docker tag node:14 ${{ github.event.repository.name }}-${{ github.ref_name }}:latest
-          docker image ls --all
+          ls -l
