@@ -13,10 +13,9 @@ jobs:
           which aws
           aws s3 help | cat
       - name: Test Docker
-        if: github.ref == 'refs/heads/master'
+        if: github.ref_name == 'master'
         run: |
           which docker
           docker image ls --all
-          docker tag node:14 my-node:latest
+          docker tag node:14 ${{ github.event.repository.name }}-${{ github.ref_name }}:latest
           docker image ls --all
-          echo ${{github.ref_name}}
