@@ -8,18 +8,27 @@ jobs:
   test-aws:
     runs-on: ubuntu-latest
     steps:
-      - name: Try AWS CLI
-        run: |
-          which aws
-          aws s3 help | cat
-      - name: Test Docker
+      - name: Set up Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and push docker image
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          tags: |
+            ghcr.io/stepan/${{ github.event.repository.name }}-${{ github.ref_name }}:latest
+
+      - name: Publish On-Premise Crawler
         if: github.ref_name == 'master'
         run: |
-          export GHCR_TAG="node:14"
+          docker image ls --all
+          export GHCR_TAG="ghcr.io/stepan/${{ github.event.repository.name }}-${{ github.ref_name }}:latest"
           export ON_PREMISE_TAG="${{ github.event.repository.name }}-${{ github.ref_name }}:latest"
           export IMAGE_TAR="${{ github.event.repository.name }}-${{ github.ref_name }}.tar"
           
           docker tag "$GHCR_TAG" "$ON_PREMISE_TAG"
           docker save "$ON_PREMISE_TAG" -o "$IMAGE_TAR"
-          docker image ls --all
           ls -l
