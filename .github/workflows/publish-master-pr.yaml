@@ -11,6 +11,11 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
+      - name: Print Script Context
+        uses: actions/github-script@v6
+        with:
+          script: |
+            console.log(JSON.stringify(context, null, 2));
       - uses: actions/checkout@v2
       - name: Publish
         run: |
