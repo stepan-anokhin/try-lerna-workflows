@@ -12,4 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Publish
-        run: echo SUCCESS
+        run: |
+          echo "github.ref = ${{ github.ref }}"
+          echo "github.ref_name = ${{ github.ref_name }}"
+          echo "github.ref_protected = ${{ github.ref_protected }}"
+          echo "github.ref_type = ${{ github.ref_type }}"
+          echo "github.head_ref = ${{ github.head_ref }}"
+          echo "github.base_ref = ${{ github.base_ref }}"
+          echo "github.sha = ${{ github.sha }}"
