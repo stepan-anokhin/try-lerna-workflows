@@ -29,4 +29,4 @@ jobs:
           echo "github.sha = ${{ github.sha }}"
           git rev-list -n 1 "origin/${{ github.head_ref }}"
           git rev-list -n 1 "origin/${{ github.base_ref }}"
-          echo "hello2"
+          echo "hello - 1"
